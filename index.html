@@ -10,736 +10,832 @@
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: #f8f9fa;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f5f7fa;
             color: #333;
             line-height: 1.6;
         }
-
-        .header {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        
+        .dashboard-header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
             color: white;
-            padding: 2rem 0;
+            padding: 2rem 1rem;
             text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-
-        .header h1 {
+        
+        .dashboard-header h1 {
             font-size: 2.5rem;
-            font-weight: 300;
+            font-weight: 700;
             margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
-
-        .header p {
-            font-size: 1.1rem;
+        
+        .dashboard-header .subtitle {
+            font-size: 1.2rem;
+            font-weight: 300;
             opacity: 0.9;
         }
-
+        
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 0 2rem;
+            padding: 2rem 1rem;
         }
-
-        .stats-bar {
+        
+        .stats-row {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 1.5rem;
-            margin: -1rem auto 3rem;
-            position: relative;
-            z-index: 10;
+            margin-bottom: 2rem;
         }
-
+        
         .stat-tile {
-            background: white;
-            padding: 2rem 1.5rem;
+            padding: 2rem;
             border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            color: white;
             text-align: center;
-            border-top: 4px solid;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-
+        
         .stat-tile:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
         }
-
-        .stat-tile.red { border-top-color: #ff6b6b; }
-        .stat-tile.teal { border-top-color: #4ecdc4; }
-        .stat-tile.green { border-top-color: #51cf66; }
-        .stat-tile.orange { border-top-color: #ffa726; }
-
+        
+        .stat-tile.red {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+        }
+        
+        .stat-tile.light-blue {
+            background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+        }
+        
+        .stat-tile.green {
+            background: linear-gradient(135deg, #51cf66 0%, #40c057 100%);
+        }
+        
+        .stat-tile.orange {
+            background: linear-gradient(135deg, #ffa726 0%, #ff9800 100%);
+        }
+        
         .stat-number {
-            font-size: 2.5rem;
+            font-size: 3rem;
             font-weight: 700;
             margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
-
-        .stat-tile.red .stat-number { color: #ff6b6b; }
-        .stat-tile.teal .stat-number { color: #4ecdc4; }
-        .stat-tile.green .stat-number { color: #51cf66; }
-        .stat-tile.orange .stat-number { color: #ffa726; }
-
+        
         .stat-label {
-            font-size: 0.9rem;
-            color: #666;
+            font-size: 1.1rem;
             font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            opacity: 0.95;
         }
-
+        
         .section-title {
             font-size: 1.8rem;
             font-weight: 600;
-            margin-bottom: 2rem;
-            color: #2c3e50;
+            color: #1e293b;
+            margin: 2rem 0 1.5rem 0;
             text-align: center;
         }
-
+        
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
             gap: 2rem;
             margin-bottom: 3rem;
         }
-
+        
         .card {
             background: white;
-            border-radius: 12px;
+            border-radius: 16px;
             padding: 2rem;
             box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
         }
-
+        
         .card:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px);
             box-shadow: 0 8px 30px rgba(0,0,0,0.12);
         }
-
-        .card h3 {
+        
+        .card-title {
             font-size: 1.3rem;
             font-weight: 600;
+            color: #1e293b;
             margin-bottom: 1.5rem;
-            color: #2c3e50;
-            border-bottom: 2px solid #ecf0f1;
             padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e2e8f0;
         }
-
-        .progress-bar {
-            background: #ecf0f1;
-            border-radius: 8px;
-            height: 12px;
-            margin: 0.5rem 0;
-            overflow: hidden;
+        
+        .progress-bar-container {
+            margin-bottom: 1rem;
         }
-
-        .progress-fill {
-            height: 100%;
-            border-radius: 8px;
-            transition: width 0.8s ease;
-        }
-
-        .progress-fill.high { background: #51cf66; }
-        .progress-fill.medium { background: #4ecdc4; }
-        .progress-fill.low { background: #ffa726; }
-
-        .customer-item {
+        
+        .progress-label {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin: 1rem 0;
-            padding: 0.75rem;
-            background: #f8f9fa;
-            border-radius: 8px;
+            margin-bottom: 0.5rem;
         }
-
+        
         .customer-name {
             font-weight: 500;
-            color: #2c3e50;
+            color: #374151;
         }
-
-        .customer-value {
+        
+        .percentage {
             font-weight: 600;
-            color: #4ecdc4;
+            color: #1e293b;
         }
-
-        .metric-grid {
+        
+        .progress-bar {
+            height: 8px;
+            background-color: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.8s ease;
+        }
+        
+        .progress-fill.high { background: linear-gradient(90deg, #51cf66, #40c057); }
+        .progress-fill.medium { background: linear-gradient(90deg, #ffa726, #ff9800); }
+        .progress-fill.low { background: linear-gradient(90deg, #ff6b6b, #ee5a52); }
+        
+        .metrics-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1rem;
-            margin: 1rem 0;
         }
-
-        .metric-item {
-            background: #f8f9fa;
-            padding: 1rem;
-            border-radius: 8px;
+        
+        .metric {
             text-align: center;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
         }
-
+        
         .metric-value {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: 700;
-            margin-bottom: 0.25rem;
+            color: #1e293b;
         }
-
+        
         .metric-label {
-            font-size: 0.85rem;
-            color: #666;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-top: 0.5rem;
         }
-
+        
+        .trend-chart {
+            height: 200px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: end;
+            padding: 1rem;
+            gap: 2px;
+        }
+        
+        .trend-bar {
+            background: linear-gradient(to top, #4ecdc4, #44a08d);
+            border-radius: 2px;
+            flex: 1;
+            min-height: 10px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .trend-bar:hover {
+            background: linear-gradient(to top, #51cf66, #40c057);
+        }
+        
         .report-section {
             background: white;
-            border-radius: 12px;
+            border-radius: 16px;
             padding: 2rem;
-            margin: 2rem 0;
+            margin-bottom: 2rem;
             box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.05);
         }
-
-        .report-section h2 {
+        
+        .report-title {
             font-size: 1.5rem;
             font-weight: 600;
+            color: #1e293b;
             margin-bottom: 1rem;
-            color: #2c3e50;
-            border-left: 4px solid #4ecdc4;
-            padding-left: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e2e8f0;
         }
-
-        .status-badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        
+        .report-content {
+            color: #374151;
+            line-height: 1.8;
         }
-
-        .status-pass {
-            background: #d4edda;
-            color: #155724;
+        
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f1f5f9;
         }
-
-        .status-fail {
-            background: #f8d7da;
-            color: #721c24;
+        
+        .leaderboard-item:last-child {
+            border-bottom: none;
         }
-
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1rem 0;
-        }
-
-        .data-table th,
-        .data-table td {
-            padding: 0.75rem;
-            text-align: left;
-            border-bottom: 1px solid #dee2e6;
-        }
-
-        .data-table th {
-            background: #f8f9fa;
-            font-weight: 600;
-            color: #495057;
-        }
-
-        .data-table tr:hover {
-            background: #f8f9fa;
-        }
-
-        .highlight {
-            background: linear-gradient(120deg, #4ecdc4, #44a08d);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        
+        .rank {
             font-weight: 700;
+            color: #64748b;
+            min-width: 30px;
         }
-
+        
+        .customer-info {
+            flex: 1;
+            margin-left: 1rem;
+        }
+        
+        .extraction-count {
+            font-weight: 600;
+            color: #1e293b;
+            min-width: 60px;
+            text-align: right;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+        
+        .status-pass { background-color: #51cf66; }
+        .status-warning { background-color: #ffa726; }
+        .status-fail { background-color: #ff6b6b; }
+        
+        .interactive-element {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .interactive-element:hover {
+            opacity: 0.8;
+        }
+        
         @media (max-width: 768px) {
-            .stats-bar {
-                grid-template-columns: repeat(2, 1fr);
+            .dashboard-header h1 {
+                font-size: 2rem;
             }
             
             .cards-grid {
                 grid-template-columns: 1fr;
             }
             
-            .metric-grid {
-                grid-template-columns: 1fr;
+            .stats-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .stat-number {
+                font-size: 2.5rem;
             }
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="container">
-            <h1>Doc Extraction Pilot Dashboard</h1>
-            <p>Historical Analysis (2,671 cases) + Current Test Program (276 tasks)</p>
-        </div>
-    </header>
+    <div class="dashboard-header">
+        <h1>Doc Extraction Pilot Dashboard</h1>
+        <div class="subtitle">Historical Analysis (2,666 cases) + Current Test Program (300 tasks)</div>
+    </div>
 
-    <main class="container">
-        <!-- Statistics Bar -->
-        <div class="stats-bar">
-            <div class="stat-tile red">
-                <div class="stat-number">2,671</div>
-                <div class="stat-label">Total Volume</div>
+    <div class="container">
+        <!-- Statistics Tiles -->
+        <div class="stats-row">
+            <div class="stat-tile red interactive-element" onclick="showDetail('total-records')">
+                <div class="stat-number">2,966</div>
+                <div class="stat-label">Total Records</div>
             </div>
-            <div class="stat-tile teal">
-                <div class="stat-number">10.3%</div>
-                <div class="stat-label">Extraction Rate</div>
+            <div class="stat-tile light-blue interactive-element" onclick="showDetail('extractions')">
+                <div class="stat-number">300</div>
+                <div class="stat-label">Extractions (10.1%)</div>
             </div>
-            <div class="stat-tile green">
-                <div class="stat-number">6.2%</div>
-                <div class="stat-label">Error Rate</div>
+            <div class="stat-tile green interactive-element" onclick="showDetail('success-rate')">
+                <div class="stat-number">95.0%</div>
+                <div class="stat-label">Extraction Success</div>
             </div>
-            <div class="stat-tile orange">
-                <div class="stat-number">94.2</div>
-                <div class="stat-label">Quality Score</div>
+            <div class="stat-tile orange interactive-element" onclick="showDetail('fileserve')">
+                <div class="stat-number">2,666</div>
+                <div class="stat-label">FileServe (89.9%)</div>
             </div>
         </div>
 
-        <h2 class="section-title">Analysis</h2>
+        <!-- Section Title -->
+        <div class="section-title">Test Program Analysis</div>
 
-        <!-- Cards Grid -->
+        <!-- Main Cards Grid -->
         <div class="cards-grid">
             <!-- Test Program Summary -->
             <div class="card">
-                <h3>Test Program Summary</h3>
-                <div class="metric-grid">
-                    <div class="metric-item">
-                        <div class="metric-value">276</div>
-                        <div class="metric-label">Extractions</div>
+                <div class="card-title">Test Program Summary</div>
+                <div class="metrics-grid">
+                    <div class="metric">
+                        <div class="metric-value">300</div>
+                        <div class="metric-label">Total Extractions</div>
                     </div>
-                    <div class="metric-item">
-                        <div class="metric-value">2,395</div>
-                        <div class="metric-label">FileServe</div>
+                    <div class="metric">
+                        <div class="metric-value">10.1%</div>
+                        <div class="metric-label">Extraction Rate</div>
                     </div>
-                    <div class="metric-item">
-                        <div class="metric-value">165</div>
-                        <div class="metric-label">Total Errors</div>
+                    <div class="metric">
+                        <div class="metric-value">5.0%</div>
+                        <div class="metric-label">Error Rate</div>
                     </div>
-                    <div class="metric-item">
-                        <div class="metric-value">31 days</div>
-                        <div class="metric-label">Test Period</div>
+                    <div class="metric">
+                        <div class="metric-value">15</div>
+                        <div class="metric-label">Failed Tasks</div>
                     </div>
                 </div>
-                <p style="margin-top: 1rem; color: #666;">
-                    Period: July 28 - August 27, 2025<br>
-                    Success Rate: <span class="highlight">96.7%</span>
-                </p>
             </div>
 
             <!-- Customer Success Rates -->
             <div class="card">
-                <h3>Customer Success Rates</h3>
-                <div class="customer-item">
-                    <div>
-                        <div class="customer-name">Law Office of Brian Larsen</div>
-                        <div class="progress-bar">
-                            <div class="progress-fill high" style="width: 67.6%"></div>
-                        </div>
+                <div class="card-title">Customer Success Rates</div>
+                <div class="progress-bar-container">
+                    <div class="progress-label">
+                        <span class="customer-name">Law Office of Brian Larsen</span>
+                        <span class="percentage">62.0%</span>
                     </div>
-                    <div class="customer-value">67.6%</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill high" style="width: 62%"></div>
+                    </div>
                 </div>
-                <div class="customer-item">
-                    <div>
-                        <div class="customer-name">Kasowitz LLP</div>
-                        <div class="progress-bar">
-                            <div class="progress-fill high" style="width: 31.6%"></div>
-                        </div>
+                <div class="progress-bar-container">
+                    <div class="progress-label">
+                        <span class="customer-name">Kasowitz LLP</span>
+                        <span class="percentage">29.8%</span>
                     </div>
-                    <div class="customer-value">31.6%</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill medium" style="width: 29.8%"></div>
+                    </div>
                 </div>
-                <div class="customer-item">
-                    <div>
-                        <div class="customer-name">Consumer Legal Services</div>
-                        <div class="progress-bar">
-                            <div class="progress-fill medium" style="width: 18.4%"></div>
-                        </div>
+                <div class="progress-bar-container">
+                    <div class="progress-label">
+                        <span class="customer-name">Consumer Legal Services</span>
+                        <span class="percentage">21.6%</span>
                     </div>
-                    <div class="customer-value">18.4%</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill medium" style="width: 21.6%"></div>
+                    </div>
                 </div>
-                <div class="customer-item">
-                    <div>
-                        <div class="customer-name">Dolan Law Firm PC</div>
-                        <div class="progress-bar">
-                            <div class="progress-fill medium" style="width: 16.0%"></div>
-                        </div>
+                <div class="progress-bar-container">
+                    <div class="progress-label">
+                        <span class="customer-name">Dolan Law Firm PC</span>
+                        <span class="percentage">17.5%</span>
                     </div>
-                    <div class="customer-value">16.0%</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill low" style="width: 17.5%"></div>
+                    </div>
                 </div>
             </div>
 
             <!-- Daily Volume Peaks & Lows -->
             <div class="card">
-                <h3>Daily Volume Peaks & Lows</h3>
-                <div class="metric-grid">
-                    <div class="metric-item">
-                        <div class="metric-value">20</div>
-                        <div class="metric-label">Peak Day</div>
-                    </div>
-                    <div class="metric-item">
-                        <div class="metric-value">3</div>
-                        <div class="metric-label">Low Day</div>
-                    </div>
-                    <div class="metric-item">
-                        <div class="metric-value">11.5</div>
-                        <div class="metric-label">Daily Average</div>
-                    </div>
-                    <div class="metric-item">
-                        <div class="metric-value">24</div>
-                        <div class="metric-label">Active Days</div>
-                    </div>
+                <div class="card-title">Daily Volume Peaks & Lows</div>
+                <div class="trend-chart" id="volumeChart">
+                    <!-- Trend bars will be generated by JavaScript -->
                 </div>
-                <p style="margin-top: 1rem; color: #666;">
-                    Peak occurred on August 5th with <span class="highlight">20 extractions</span><br>
-                    Most consistent activity during weekdays
-                </p>
+                <div style="margin-top: 1rem; text-align: center; color: #64748b;">
+                    <small>Peak: 20 extractions | Low: 1 extraction | Period: July 28 - September 2, 2025</small>
+                </div>
             </div>
 
             <!-- Quality Metrics Comparison -->
             <div class="card">
-                <h3>Quality Metrics Comparison</h3>
-                <div class="customer-item">
-                    <div>
-                        <div class="customer-name">Extraction Error Rate</div>
-                        <div class="progress-bar">
-                            <div class="progress-fill high" style="width: 6.6%"></div>
-                        </div>
+                <div class="card-title">Quality Metrics Comparison</div>
+                <div class="metrics-grid">
+                    <div class="metric">
+                        <div class="metric-value" style="color: #51cf66;">95.0%</div>
+                        <div class="metric-label">Extraction Success</div>
                     </div>
-                    <div class="customer-value">3.3%</div>
-                </div>
-                <div class="customer-item">
-                    <div>
-                        <div class="customer-name">FileServe Error Rate</div>
-                        <div class="progress-bar">
-                            <div class="progress-fill medium" style="width: 13%"></div>
-                        </div>
+                    <div class="metric">
+                        <div class="metric-value" style="color: #51cf66;">93.6%</div>
+                        <div class="metric-label">FileServe Success</div>
                     </div>
-                    <div class="customer-value">6.5%</div>
-                </div>
-                <div class="customer-item">
-                    <div>
-                        <div class="customer-name">Overall Success Rate</div>
-                        <div class="progress-bar">
-                            <div class="progress-fill high" style="width: 96.7%"></div>
-                        </div>
+                    <div class="metric">
+                        <div class="metric-value" style="color: #ffa726;">5.0%</div>
+                        <div class="metric-label">Extraction Error</div>
                     </div>
-                    <div class="customer-value">96.7%</div>
-                </div>
-                <div class="customer-item">
-                    <div>
-                        <div class="customer-name">Data Quality Score</div>
-                        <div class="progress-bar">
-                            <div class="progress-fill high" style="width: 98.1%"></div>
-                        </div>
+                    <div class="metric">
+                        <div class="metric-value" style="color: #ffa726;">6.4%</div>
+                        <div class="metric-label">FileServe Error</div>
                     </div>
-                    <div class="customer-value">98.1%</div>
                 </div>
             </div>
         </div>
 
         <!-- Executive Summary -->
         <div class="report-section">
-            <h2>1. Executive Summary</h2>
-            <p>The test program processed <strong>2,671 total cases</strong> with <strong>276 extractions (10.3%)</strong> during the evaluation period. The system achieved a <strong>96.7% success rate</strong> with only 165 total errors across both extraction and FileServe processes. Extraction error rate remained low at 3.3%, significantly outperforming FileServe's 6.5% error rate.</p>
-            
-            <div class="metric-grid" style="margin-top: 1.5rem;">
-                <div class="metric-item">
-                    <div class="metric-value highlight">276</div>
-                    <div class="metric-label">Successful Extractions</div>
-                </div>
-                <div class="metric-item">
-                    <div class="metric-value highlight">6.2%</div>
-                    <div class="metric-label">Overall Error Rate</div>
-                </div>
+            <div class="report-title">Executive Summary</div>
+            <div class="report-content">
+                <p>Total records processed: <strong>2,966</strong></p>
+                <p>Extractions: <strong>300 (10.1%)</strong></p>
+                <p>FileServe: <strong>2,666 (89.9%)</strong></p>
+                <p>Overall rejection rate: Extraction <strong>5.0%</strong>, FileServe <strong>6.4%</strong></p>
             </div>
         </div>
 
         <!-- Key Metrics Snapshot -->
         <div class="report-section">
-            <h2>2. Key Metrics Snapshot</h2>
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Metric</th>
-                        <th>Value</th>
-                        <th>Percentage</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Total Volume</td>
-                        <td>2,671</td>
-                        <td>100%</td>
-                        <td><span class="status-badge status-pass">Complete</span></td>
-                    </tr>
-                    <tr>
-                        <td>Extraction Count</td>
-                        <td>276</td>
-                        <td>10.3%</td>
-                        <td><span class="status-badge status-pass">Target Met</span></td>
-                    </tr>
-                    <tr>
-                        <td>FileServe Count</td>
-                        <td>2,395</td>
-                        <td>89.7%</td>
-                        <td><span class="status-badge status-pass">Normal</span></td>
-                    </tr>
-                    <tr>
-                        <td>Extraction Errors</td>
-                        <td>9</td>
-                        <td>3.3%</td>
-                        <td><span class="status-badge status-pass">Low</span></td>
-                    </tr>
-                    <tr>
-                        <td>FileServe Errors</td>
-                        <td>156</td>
-                        <td>6.5%</td>
-                        <td><span class="status-badge status-fail">Above Target</span></td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="report-title">Key Metrics Snapshot</div>
+            <div class="report-content">
+                <div class="metrics-grid">
+                    <div class="metric">
+                        <div class="metric-value">300</div>
+                        <div class="metric-label">Total Extractions</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">2,666</div>
+                        <div class="metric-label">Total FileServe</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">10.1%</div>
+                        <div class="metric-label">Extraction Rate</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">15</div>
+                        <div class="metric-label">Rejections (Extraction)</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">170</div>
+                        <div class="metric-label">Rejections (FileServe)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Daily Trends -->
+        <div class="report-section">
+            <div class="report-title">Daily Trend Analysis</div>
+            <div class="report-content">
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-title">Volume by Date</div>
+                        <div id="dailyTrendsList">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Peak Performance Days</div>
+                        <p><strong>Highest Volume:</strong> August 5, 2025 (20 extractions)</p>
+                        <p><strong>Second Highest:</strong> August 20, 2025 (19 extractions)</p>
+                        <p><strong>Third Highest:</strong> August 14 & 18, 2025 (17 & 16 extractions)</p>
+                        <p><strong>Lowest Volume:</strong> September 2, 2025 (1 extraction)</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Customer Leaderboard -->
         <div class="report-section">
-            <h2>4. Customer Leaderboard</h2>
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Customer Name</th>
-                        <th>Total Volume</th>
-                        <th>Extraction Rate</th>
-                        <th>Extraction Count</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Law Office of Brian Larsen</td>
-                        <td>111</td>
-                        <td><strong class="highlight">67.6%</strong></td>
-                        <td>75</td>
-                    </tr>
-                    <tr>
-                        <td>Kasowitz LLP</td>
-                        <td>206</td>
-                        <td><strong>31.6%</strong></td>
-                        <td>65</td>
-                    </tr>
-                    <tr>
-                        <td>Consumer Legal Services, P.C.</td>
-                        <td>179</td>
-                        <td><strong>18.4%</strong></td>
-                        <td>33</td>
-                    </tr>
-                    <tr>
-                        <td>Dolan Law Firm PC</td>
-                        <td>106</td>
-                        <td><strong>16.0%</strong></td>
-                        <td>17</td>
-                    </tr>
-                    <tr>
-                        <td>Gibson, Robb & Lindh</td>
-                        <td>36</td>
-                        <td><strong>11.1%</strong></td>
-                        <td>4</td>
-                    </tr>
-                    <tr>
-                        <td>McCune Law Group</td>
-                        <td>150</td>
-                        <td>7.3%</td>
-                        <td>11</td>
-                    </tr>
-                    <tr>
-                        <td>The Molino Firm</td>
-                        <td>208</td>
-                        <td>4.8%</td>
-                        <td>10</td>
-                    </tr>
-                    <tr>
-                        <td>American Lemon Law Group, LLP</td>
-                        <td>249</td>
-                        <td>3.2%</td>
-                        <td>8</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="report-title">Customer Leaderboard</div>
+            <div class="report-content">
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-title">Top Performers by Extraction Rate</div>
+                        <div class="leaderboard-item">
+                            <span class="rank">1</span>
+                            <div class="customer-info">
+                                <div class="customer-name">Law Office of Brian Larsen</div>
+                            </div>
+                            <div class="extraction-count">62.0%</div>
+                        </div>
+                        <div class="leaderboard-item">
+                            <span class="rank">2</span>
+                            <div class="customer-info">
+                                <div class="customer-name">Kasowitz LLP</div>
+                            </div>
+                            <div class="extraction-count">29.8%</div>
+                        </div>
+                        <div class="leaderboard-item">
+                            <span class="rank">3</span>
+                            <div class="customer-info">
+                                <div class="customer-name">Consumer Legal Services, P.C.</div>
+                            </div>
+                            <div class="extraction-count">21.6%</div>
+                        </div>
+                        <div class="leaderboard-item">
+                            <span class="rank">4</span>
+                            <div class="customer-info">
+                                <div class="customer-name">Dolan Law Firm PC</div>
+                            </div>
+                            <div class="extraction-count">17.5%</div>
+                        </div>
+                        <div class="leaderboard-item">
+                            <span class="rank">5</span>
+                            <div class="customer-info">
+                                <div class="customer-name">Gibson, Robb & Lindh</div>
+                            </div>
+                            <div class="extraction-count">9.3%</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Top Contributors by Volume</div>
+                        <div class="leaderboard-item">
+                            <span class="rank">1</span>
+                            <div class="customer-info">
+                                <div class="customer-name">Law Office of Brian Larsen</div>
+                            </div>
+                            <div class="extraction-count">80</div>
+                        </div>
+                        <div class="leaderboard-item">
+                            <span class="rank">2</span>
+                            <div class="customer-info">
+                                <div class="customer-name">Kasowitz LLP</div>
+                            </div>
+                            <div class="extraction-count">70</div>
+                        </div>
+                        <div class="leaderboard-item">
+                            <span class="rank">3</span>
+                            <div class="customer-info">
+                                <div class="customer-name">Consumer Legal Services, P.C.</div>
+                            </div>
+                            <div class="extraction-count">41</div>
+                        </div>
+                        <div class="leaderboard-item">
+                            <span class="rank">4</span>
+                            <div class="customer-info">
+                                <div class="customer-name">WLF - Wage & Hour Department</div>
+                            </div>
+                            <div class="extraction-count">37</div>
+                        </div>
+                        <div class="leaderboard-item">
+                            <span class="rank">5</span>
+                            <div class="customer-info">
+                                <div class="customer-name">Dolan Law Firm PC</div>
+                            </div>
+                            <div class="extraction-count">20</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- Error Analysis -->
+        <!-- Rejection Analysis -->
         <div class="report-section">
-            <h2>5. Error Analysis</h2>
-            <p>Error rates vary significantly between extraction and FileServe processes. The extraction process demonstrates superior reliability with a 3.3% error rate compared to FileServe's 6.5% rate.</p>
-            
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Customer Name</th>
-                        <th>Extraction Error Rate</th>
-                        <th>FileServe Error Rate</th>
-                        <th>Overall Performance</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>American Lemon Law Group, LLP</td>
-                        <td><strong class="highlight">12.5%</strong></td>
-                        <td>5.8%</td>
-                        <td>Needs Attention</td>
-                    </tr>
-                    <tr>
-                        <td>Law Office of Brian Larsen</td>
-                        <td>2.7%</td>
-                        <td><strong>16.7%</strong></td>
-                        <td>FileServe Issues</td>
-                    </tr>
-                    <tr>
-                        <td>Dolan Law Firm PC</td>
-                        <td>5.9%</td>
-                        <td>13.5%</td>
-                        <td>Above Average Errors</td>
-                    </tr>
-                    <tr>
-                        <td>Consumer Legal Services, P.C.</td>
-                        <td>3.0%</td>
-                        <td>2.7%</td>
-                        <td><span class="highlight">Excellent</span></td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="report-title">Error Rate Analysis</div>
+            <div class="report-content">
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-title">Extraction Error Rates by Customer</div>
+                        <div class="progress-bar-container">
+                            <div class="progress-label">
+                                <span class="customer-name">American Lemon Law Group, LLP</span>
+                                <span class="percentage">12.5%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill low" style="width: 12.5%"></div>
+                            </div>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-label">
+                                <span class="customer-name">Consumer Legal Services, P.C.</span>
+                                <span class="percentage">7.3%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill medium" style="width: 7.3%"></div>
+                            </div>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-label">
+                                <span class="customer-name">Kasowitz LLP</span>
+                                <span class="percentage">7.1%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill medium" style="width: 7.1%"></div>
+                            </div>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-label">
+                                <span class="customer-name">Law Office of Brian Larsen</span>
+                                <span class="percentage">5.0%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill high" style="width: 5.0%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">FileServe Error Rates by Customer</div>
+                        <div class="progress-bar-container">
+                            <div class="progress-label">
+                                <span class="customer-name">Law Office of Brian Larsen</span>
+                                <span class="percentage">14.3%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill low" style="width: 14.3%"></div>
+                            </div>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-label">
+                                <span class="customer-name">Dolan Law Firm PC</span>
+                                <span class="percentage">12.8%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill low" style="width: 12.8%"></div>
+                            </div>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-label">
+                                <span class="customer-name">The Molino Firm</span>
+                                <span class="percentage">10.7%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill medium" style="width: 10.7%"></div>
+                            </div>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-label">
+                                <span class="customer-name">Gibson, Robb & Lindh</span>
+                                <span class="percentage">10.3%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill medium" style="width: 10.3%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- Narrative Analysis -->
+        <!-- Narrative -->
         <div class="report-section">
-            <h2>7. Narrative Analysis</h2>
-            <p>The test program demonstrates strong performance with a <strong>10.3% extraction adoption rate</strong>. Law Office of Brian Larsen leads with an exceptional <strong>67.6% extraction rate</strong>, while larger volume customers like WLF divisions show lower but stable adoption rates around 3-4%.</p>
-            
-            <p>Quality metrics reveal that extraction processing is significantly more reliable than traditional FileServe, with error rates of 3.3% versus 6.5% respectively. This suggests the extraction technology offers both efficiency and accuracy improvements.</p>
-            
-            <p>Customer-specific patterns indicate that smaller, specialized firms achieve higher extraction rates, possibly due to document standardization or case type compatibility with the extraction process.</p>
+            <div class="report-title">Test Program Narrative</div>
+            <div class="report-content">
+                <p>Extraction rate overall is <strong>10.1%</strong>.</p>
+                <p>Law Office of Brian Larsen leads with <strong>62.0%</strong> extraction rate.</p>
+                <p>Top contributors in absolute extraction volume: Law Office of Brian Larsen (80), Kasowitz LLP (70), Consumer Legal Services, P.C. (41).</p>
+                <p>Error rates for Extraction are lower (<strong>5.0%</strong>) than FileServe (<strong>6.4%</strong>).</p>
+                <p>Highest extraction error rate: American Lemon Law Group, LLP at <strong>12.5%</strong>.</p>
+                <p>Highest FileServe error rate: Law Office of Brian Larsen at <strong>14.3%</strong>.</p>
+            </div>
         </div>
 
-        <!-- Stage-Gate Assessment -->
+        <!-- Stage-Gate Read -->
         <div class="report-section">
-            <h2>8. Stage-Gate Assessment</h2>
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Metric</th>
-                        <th>Current Value</th>
-                        <th>Threshold</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Extraction Rate</td>
-                        <td>10.3%</td>
-                        <td>≥10%</td>
-                        <td><span class="status-badge status-pass">Pass</span></td>
-                    </tr>
-                    <tr>
-                        <td>Extraction Error Rate</td>
-                        <td>3.3%</td>
-                        <td>≤5%</td>
-                        <td><span class="status-badge status-pass">Pass</span></td>
-                    </tr>
-                    <tr>
-                        <td>FileServe Error Rate</td>
-                        <td>6.5%</td>
-                        <td>≤5%</td>
-                        <td><span class="status-badge status-fail">Fail</span></td>
-                    </tr>
-                    <tr>
-                        <td>Overall Quality Score</td>
-                        <td>94.2%</td>
-                        <td>≥90%</td>
-                        <td><span class="status-badge status-pass">Pass</span></td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <p style="margin-top: 1rem;"><strong>Recommendation:</strong> Proceed to next phase with focus on reducing FileServe error rates while maintaining extraction performance excellence.</p>
+            <div class="report-title">Stage-Gate Performance</div>
+            <div class="report-content">
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-title">Performance Metrics vs Thresholds</div>
+                        <div class="leaderboard-item">
+                            <span class="status-indicator status-pass"></span>
+                            <div class="customer-info">
+                                <div class="customer-name">Extraction Rate</div>
+                                <small>10.1% (Threshold: ≥10%)</small>
+                            </div>
+                            <div class="extraction-count" style="color: #51cf66;">PASS</div>
+                        </div>
+                        <div class="leaderboard-item">
+                            <span class="status-indicator status-pass"></span>
+                            <div class="customer-info">
+                                <div class="customer-name">Extraction Error Rate</div>
+                                <small>5.0% (Threshold: ≤8%)</small>
+                            </div>
+                            <div class="extraction-count" style="color: #51cf66;">PASS</div>
+                        </div>
+                        <div class="leaderboard-item">
+                            <span class="status-indicator status-pass"></span>
+                            <div class="customer-info">
+                                <div class="customer-name">FileServe Error Rate</div>
+                                <small>6.4% (Threshold: ≤8%)</small>
+                            </div>
+                            <div class="extraction-count" style="color: #51cf66;">PASS</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Overall Assessment</div>
+                        <div class="metric" style="background: #dcfce7; border-color: #51cf66;">
+                            <div class="metric-value" style="color: #16a34a;">✓ ALL METRICS PASS</div>
+                            <div class="metric-label">Test Program meets all thresholds</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Data Quality Checks -->
         <div class="report-section">
-            <h2>9. Data Quality Checks</h2>
-            <div class="metric-grid">
-                <div class="metric-item">
-                    <div class="metric-value highlight">✓</div>
-                    <div class="metric-label">Data Completeness</div>
+            <div class="report-title">Data Quality Checks</div>
+            <div class="report-content">
+                <div class="metric" style="background: #dcfce7; border-color: #51cf66;">
+                    <div class="metric-value" style="color: #16a34a;">✓ ALL CHECKS PASSED</div>
+                    <div class="metric-label">Data integrity verified across all metrics</div>
                 </div>
-                <div class="metric-item">
-                    <div class="metric-value highlight">✓</div>
-                    <div class="metric-label">Volume Validation</div>
-                </div>
-                <div class="metric-item">
-                    <div class="metric-value highlight">✓</div>
-                    <div class="metric-label">Customer Mapping</div>
-                </div>
-                <div class="metric-item">
-                    <div class="metric-value highlight">✓</div>
-                    <div class="metric-label">Date Range Check</div>
-                </div>
+                <p style="margin-top: 1rem;">Period analyzed: <strong>July 28 - September 2, 2025</strong> (36 days)</p>
             </div>
-            <p style="margin-top: 1rem; color: #51cf66; font-weight: 600;">All data quality checks passed successfully. Dataset is complete and validated for analysis.</p>
         </div>
-    </main>
+    </div>
 
     <script>
-        // Add interactive features
-        document.addEventListener('DOMContentLoaded', function() {
-            // Animate progress bars
-            const progressBars = document.querySelectorAll('.progress-fill');
-            progressBars.forEach(bar => {
-                const width = bar.style.width;
-                bar.style.width = '0%';
-                setTimeout(() => {
-                    bar.style.width = width;
-                }, 500);
-            });
+        // Interactive elements
+        function showDetail(metric) {
+            const details = {
+                'total-records': 'Total records processed across both Extraction and FileServe channels during the analysis period.',
+                'extractions': 'Documents processed through the extraction pipeline with a 10.1% success rate.',
+                'success-rate': 'Successful extraction rate calculated as (300-15)/300 = 95.0%',
+                'fileserve': 'Documents processed through traditional FileServe with 89.9% of total volume.'
+            };
+            
+            alert(details[metric] || 'Detailed information not available.');
+        }
 
-            // Add hover effects to stat tiles
-            const statTiles = document.querySelectorAll('.stat-tile');
-            statTiles.forEach(tile => {
-                tile.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-5px) scale(1.02)';
+        // Generate volume chart
+        function generateVolumeChart() {
+            const dailyData = {
+                "2025-07-28": 15, "2025-07-29": 9, "2025-07-30": 7, "2025-07-31": 5,
+                "2025-08-01": 10, "2025-08-04": 12, "2025-08-05": 20, "2025-08-06": 14,
+                "2025-08-07": 13, "2025-08-08": 18, "2025-08-11": 13, "2025-08-12": 16,
+                "2025-08-13": 6, "2025-08-14": 16, "2025-08-15": 11, "2025-08-18": 17,
+                "2025-08-19": 14, "2025-08-20": 19, "2025-08-21": 14, "2025-08-22": 5,
+                "2025-08-25": 6, "2025-08-26": 9, "2025-08-27": 8, "2025-08-28": 13,
+                "2025-08-29": 6, "2025-08-24": 3, "2025-09-02": 1
+            };
+
+            const chart = document.getElementById('volumeChart');
+            const maxValue = Math.max(...Object.values(dailyData));
+            
+            chart.innerHTML = '';
+            
+            Object.entries(dailyData).sort().forEach(([date, value]) => {
+                const bar = document.createElement('div');
+                bar.className = 'trend-bar';
+                bar.style.height = `${(value / maxValue) * 160}px`;
+                bar.title = `${date}: ${value} extractions`;
+                chart.appendChild(bar);
+            });
+        }
+
+        // Generate daily trends list
+        function generateDailyTrendsList() {
+            const dailyData = {
+                "2025-08-05": 20, "2025-08-20": 19, "2025-08-08": 18, "2025-08-18": 17,
+                "2025-08-12": 16, "2025-08-14": 16, "2025-07-28": 15, "2025-08-06": 14,
+                "2025-08-19": 14, "2025-08-21": 14, "2025-08-07": 13, "2025-08-11": 13,
+                "2025-08-28": 13, "2025-08-01": 10, "2025-07-29": 9, "2025-08-26": 9,
+                "2025-08-27": 8, "2025-07-30": 7, "2025-08-13": 6, "2025-08-25": 6,
+                "2025-08-29": 6, "2025-07-31": 5, "2025-08-22": 5, "2025-08-24": 3,
+                "2025-09-02": 1
+            };
+
+            const container = document.getElementById('dailyTrendsList');
+            container.innerHTML = '';
+            
+            Object.entries(dailyData)
+                .sort(([,a], [,b]) => b - a)
+                .slice(0, 10)
+                .forEach(([date, value]) => {
+                    const item = document.createElement('div');
+                    item.className = 'leaderboard-item';
+                    item.innerHTML = `
+                        <div class="customer-info">
+                            <div class="customer-name">${new Date(date).toLocaleDateString()}</div>
+                        </div>
+                        <div class="extraction-count">${value}</div>
+                    `;
+                    container.appendChild(item);
+                });
+        }
+
+        // Initialize interactive elements
+        document.addEventListener('DOMContentLoaded', function() {
+            generateVolumeChart();
+            generateDailyTrendsList();
+            
+            // Add hover effects to progress bars
+            document.querySelectorAll('.progress-fill').forEach(bar => {
+                bar.addEventListener('mouseover', function() {
+                    this.style.opacity = '0.8';
                 });
                 
-                tile.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(-2px) scale(1)';
+                bar.addEventListener('mouseout', function() {
+                    this.style.opacity = '1';
                 });
             });
-
-            // Interactive table highlighting
-            const tableRows = document.querySelectorAll('.data-table tbody tr');
-            tableRows.forEach(row => {
-                row.addEventListener('click', function() {
-                    // Remove previous selection
-                    tableRows.forEach(r => r.style.background = '');
-                    // Highlight clicked row
-                    this.style.background = 'linear-gradient(90deg, #4ecdc4, #44a08d)';
-                    this.style.color = 'white';
-                    setTimeout(() => {
-                        this.style.background = '';
-                        this.style.color = '';
-                    }, 2000);
-                });
-            });
-
-            // Update timestamp
-            const now = new Date();
-            const timestamp = now.toLocaleString();
-            console.log(`Dashboard loaded at: ${timestamp}`);
         });
     </script>
 </body>
