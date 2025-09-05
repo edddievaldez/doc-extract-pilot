@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Legal Services Analytics Dashboard</title>
+    <title>Doc Extract Pilot Dashboard</title>
     <style>
         * {
             margin: 0;
@@ -373,7 +373,7 @@
 <body>
     <div class="header">
         <h1>Legal Services Analytics Dashboard</h1>
-        <p>Extraction & FileServe Performance Analysis</p>
+        <p>Extraction & FileServe Performance</p>
     </div>
 
     <div class="container">
@@ -381,11 +381,11 @@
         <div class="stats-grid">
             <div class="stat-card red" onclick="animateCard(this)">
                 <div class="stat-number">10.1%</div>
-                <div class="stat-label">Extraction Utilization</div>
+                <div class="stat-label">Extraction</div>
             </div>
             <div class="stat-card teal" onclick="animateCard(this)">
                 <div class="stat-number">3,206</div>
-                <div class="stat-label">Total Records</div>
+                <div class="stat-label">Total</div>
             </div>
             <div class="stat-card green" onclick="animateCard(this)">
                 <div class="stat-number">325</div>
@@ -393,7 +393,7 @@
             </div>
             <div class="stat-card orange" onclick="animateCard(this)">
                 <div class="stat-number">5.7%</div>
-                <div class="stat-label">Average Rejection Rate</div>
+                <div class="stat-label">Rejection Rate</div>
             </div>
         </div>
 
@@ -411,7 +411,7 @@
             </div>
 
             <div class="card">
-                <h3>Key Metrics Dashboard</h3>
+                <h3>Key Metrics</h3>
                 <div class="metrics-grid">
                     <div class="metric-box" onclick="highlightMetric(this)">
                         <div class="metric-value">325</div>
@@ -530,11 +530,11 @@
                     <canvas id="trendsChart" width="800" height="400"></canvas>
                 </div>
                 <ul class="bullet-list">
-                    <li>Tuesday shows peak activity with 80 orders (24.6% of total volume)</li>
+                    <li>Tuesday shows peak activity with 80 extractions (24.6% of total volume)</li>
                     <li>Recent 7-day period shows 35.4% drop from previous week</li>
-                    <li>August 5th hit peak day with 20 orders processed</li>
-                    <li>Weekend activity minimal with only 3 Sunday orders, zero Saturday</li>
-                    <li>Daily average runs 11.2 orders across 29-day period</li>
+                    <li>August 5th hit peak day with 20 extractions processed</li>
+                    <li>Weekend activity minimal with only 3 Sunday extractions, zero Saturday</li>
+                    <li>Daily average runs 11.2 extractions across 29-day period</li>
                 </ul>
             </div>
         </div>
@@ -654,7 +654,7 @@
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Weekly Order Distribution (325 total orders)',
+                        text: 'Weekly Distribution (325 total)',
                         font: {
                             size: 16
                         }
