@@ -3,661 +3,579 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doc Extract Pilot Dashboard</title>
+    <title>Extraction% Pilot Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f8f9fa;
-            color: #333;
+            background-color: #f8f9fa;
+            color: #2c3e50;
             line-height: 1.6;
         }
-
-        .header {
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            color: white;
-            text-align: center;
-            padding: 2rem 1rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
         }
-
+        
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
         .header h1 {
             font-size: 2.5rem;
+            margin-bottom: 10px;
             font-weight: 700;
-            margin-bottom: 0.5rem;
         }
-
+        
         .header p {
             font-size: 1.2rem;
             opacity: 0.9;
         }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
-        }
-
+        
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
         }
-
+        
         .stat-card {
             background: white;
-            padding: 2rem;
+            padding: 25px;
             border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        }
-
-        .stat-card.red { border-left: 5px solid #ff6b6b; }
-        .stat-card.teal { border-left: 5px solid #4ecdc4; }
-        .stat-card.green { border-left: 5px solid #51cf66; }
-        .stat-card.orange { border-left: 5px solid #ffa726; }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-card.red .stat-number { color: #ff6b6b; }
-        .stat-card.teal .stat-number { color: #4ecdc4; }
-        .stat-card.green .stat-number { color: #51cf66; }
-        .stat-card.orange .stat-number { color: #ffa726; }
-
-        .stat-label {
-            color: #666;
-            font-size: 1.1rem;
-            font-weight: 500;
-        }
-
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .card {
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            color: #2c3e50;
-            border-bottom: 3px solid #4ecdc4;
-            padding-bottom: 0.5rem;
-        }
-
-        .section {
-            margin-bottom: 3rem;
-        }
-
-        .section h2 {
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            color: #2c3e50;
-            text-align: center;
-        }
-
-        .leaderboard {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .leaderboard-item {
-            display: flex;
-            align-items: center;
-            padding: 1rem 1.5rem;
-            border-bottom: 1px solid #eee;
-            transition: background-color 0.3s ease;
-            cursor: pointer;
-        }
-
-        .leaderboard-item:hover {
-            background: #f8f9fa;
-        }
-
-        .leaderboard-item:last-child {
-            border-bottom: none;
-        }
-
-        .rank {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 1.2rem;
-            margin-right: 1rem;
-        }
-
-        .rank.gold { background: linear-gradient(45deg, #ffd700, #ffed4e); color: #333; }
-        .rank.silver { background: linear-gradient(45deg, #c0c0c0, #e8e8e8); color: #333; }
-        .rank.bronze { background: linear-gradient(45deg, #cd7f32, #d4a574); color: white; }
-        .rank.regular { background: #6c757d; color: white; }
-
-        .customer-info {
-            flex: 1;
-        }
-
-        .customer-name {
-            font-weight: 600;
-            font-size: 1.1rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .customer-stats {
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        .extraction-rate {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-left: auto;
-        }
-
-        .error-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1rem;
-        }
-
-        .error-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            transition: transform 0.2s ease;
-        }
-
-        .error-card:hover {
-            transform: translateY(-2px);
-        }
-
-        .error-card.good { border-left: 4px solid #51cf66; }
-        .error-card.warning { border-left: 4px solid #ffa726; }
-        .error-card.bad { border-left: 4px solid #ff6b6b; }
-
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: #e9ecef;
-            border-radius: 4px;
-            overflow: hidden;
-            margin: 1rem 0;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #4ecdc4, #51cf66);
-            border-radius: 4px;
-            transition: width 1s ease;
-        }
-
-        .bullet-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        .bullet-list li {
-            padding: 0.5rem 0;
-            padding-left: 1.5rem;
-            position: relative;
-        }
-
-        .bullet-list li:before {
-            content: "•";
-            color: #4ecdc4;
-            font-weight: 700;
-            font-size: 1.2rem;
-            position: absolute;
-            left: 0;
-        }
-
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin: 1.5rem 0;
-        }
-
-        .metric-box {
-            background: #f8f9fa;
-            padding: 1rem;
-            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             text-align: center;
             transition: all 0.3s ease;
             cursor: pointer;
         }
-
-        .metric-box:hover {
-            background: #e9ecef;
+        
+        .stat-card:hover {
             transform: scale(1.05);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
         }
-
-        .metric-value {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #2c3e50;
+        
+        .stat-card.extraction { border-top: 4px solid #ff6b6b; }
+        .stat-card.total { border-top: 4px solid #4ecdc4; }
+        .stat-card.count { border-top: 4px solid #51cf66; }
+        .stat-card.rejection { border-top: 4px solid #ffa726; }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 5px;
         }
-
-        .metric-label {
+        
+        .stat-label {
+            font-size: 1.1rem;
             color: #666;
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
+            font-weight: 500;
         }
-
-        .status-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 0.5rem;
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
         }
-
-        .status-good { background: #51cf66; }
-        .status-warning { background: #ffa726; }
-        .status-bad { background: #ff6b6b; }
-        .status-pending { background: #6c757d; }
-
-        .stage-gate-table {
-            width: 100%;
-            border-collapse: collapse;
+        
+        .card {
             background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-
-        .stage-gate-table th,
-        .stage-gate-table td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
-
-        .stage-gate-table th {
-            background: #f8f9fa;
-            font-weight: 600;
+        
+        .card h3 {
             color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            font-weight: 600;
         }
-
+        
+        .card ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .card li {
+            margin-bottom: 8px;
+            color: #666;
+            position: relative;
+            padding-left: 15px;
+        }
+        
+        .card li:before {
+            content: "•";
+            color: #4ecdc4;
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+        
+        .section {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .leaderboard-item:hover {
+            background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .medal {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .gold { background: linear-gradient(135deg, #ffd700 0%, #ffed4a 100%); color: #333; }
+        .silver { background: linear-gradient(135deg, #c0c0c0 0%, #ddd 100%); color: #333; }
+        .bronze { background: linear-gradient(135deg, #cd7f32 0%, #d4a574 100%); }
+        
+        .firm-name {
+            flex-grow: 1;
+            font-weight: 600;
+        }
+        
+        .extraction-rate {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        
+        .error-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .error-card {
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .error-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        .good { background: linear-gradient(135deg, #51cf66 0%, #40c057 100%); color: white; }
+        .warning { background: linear-gradient(135deg, #ffa726 0%, #ff9800 100%); color: white; }
+        .bad { background: linear-gradient(135deg, #ff6b6b 0%, #f03e3e 100%); color: white; }
+        
+        .error-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .error-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin: 20px 0;
+        }
+        
+        .insights {
+            margin-top: 15px;
+        }
+        
+        .insights ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .insights li {
+            margin-bottom: 8px;
+            color: #666;
+            padding-left: 15px;
+            position: relative;
+        }
+        
+        .insights li:before {
+            content: "→";
+            color: #4ecdc4;
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+        
         .tabs {
             display: flex;
-            margin-bottom: 1rem;
-            border-bottom: 2px solid #eee;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e9ecef;
         }
-
+        
         .tab {
-            padding: 1rem 2rem;
+            padding: 12px 24px;
             background: none;
             border: none;
             cursor: pointer;
             font-size: 1rem;
+            font-weight: 500;
             color: #666;
             transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
         }
-
+        
         .tab.active {
             color: #4ecdc4;
-            border-bottom: 2px solid #4ecdc4;
+            border-bottom-color: #4ecdc4;
         }
-
+        
         .tab-content {
             display: none;
         }
-
+        
         .tab-content.active {
             display: block;
         }
-
+        
+        .stage-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        .stage-table th,
+        .stage-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .stage-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .status-pass { color: #51cf66; font-weight: bold; }
+        .status-fail { color: #ff6b6b; font-weight: bold; }
+        .status-pending { color: #ffa726; font-weight: bold; }
+        
+        .call-outs {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+        
+        .call-outs h2 {
+            color: white;
+            margin-bottom: 20px;
+        }
+        
+        .call-outs ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .call-outs li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+            font-size: 1.1rem;
+        }
+        
+        .call-outs li:before {
+            content: "!";
+            position: absolute;
+            left: 0;
+            background: white;
+            color: #667eea;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
         @media (max-width: 768px) {
+            .dashboard {
+                padding: 10px;
+            }
+            
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .error-grid {
+                grid-template-columns: 1fr;
+            }
+            
             .header h1 {
                 font-size: 2rem;
             }
-
-            .dashboard-grid {
-                grid-template-columns: 1fr;
+            
+            .stat-number {
+                font-size: 2.5rem;
             }
-
-            .stats-grid {
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            }
-
-            .leaderboard-item {
-                flex-direction: column;
-                text-align: center;
-                gap: 1rem;
-            }
-
-            .extraction-rate {
-                margin-left: 0;
-            }
-        }
-
-        .highlight {
-            background: linear-gradient(120deg, #4ecdc4 0%, #4ecdc4 100%);
-            background-repeat: no-repeat;
-            background-size: 100% 0.2em;
-            background-position: 0 88%;
-            font-weight: 600;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Doc Extract Pilot Dashboard</h1>
-        <p>Extraction & FileServe Performance</p>
-    </div>
-
-    <div class="container">
-        <!-- Stats Cards -->
+    <div class="dashboard">
+        <div class="header">
+            <h1>Extraction% Pilot Dashboard</h1>
+        
+        </div>
+        
         <div class="stats-grid">
-            <div class="stat-card red" onclick="animateCard(this)">
-                <div class="stat-number">10.1%</div>
+            <div class="stat-card extraction" onclick="animateCard(this)">
+                <div class="stat-number">10.05%</div>
                 <div class="stat-label">Extraction</div>
             </div>
-            <div class="stat-card teal" onclick="animateCard(this)">
-                <div class="stat-number">3,206</div>
+            <div class="stat-card total" onclick="animateCard(this)">
+                <div class="stat-number">3,663</div>
                 <div class="stat-label">Total</div>
             </div>
-            <div class="stat-card green" onclick="animateCard(this)">
-                <div class="stat-number">325</div>
+            <div class="stat-card count" onclick="animateCard(this)">
+                <div class="stat-number">368</div>
                 <div class="stat-label">Extraction Count</div>
             </div>
-            <div class="stat-card orange" onclick="animateCard(this)">
-                <div class="stat-number">5.7%</div>
+            <div class="stat-card rejection" onclick="animateCard(this)">
+                <div class="stat-number">6.0%</div>
                 <div class="stat-label">Rejection Rate</div>
             </div>
         </div>
-
-        <!-- Test Program Analysis Grid -->
-        <div class="dashboard-grid">
+        
+        <div class="content-grid">
             <div class="card">
                 <h3>Executive Summary</h3>
-                <ul class="bullet-list">
-                    <li>Extraction rate sits at <span class="highlight">10.1%</span> with 325 of 3,206 total records</li>
-                    <li>Rejection rates show Extraction at <span class="highlight">5.2%</span> and FileServe at <span class="highlight">6.3%</span></li>
-                    <li>Law Office of Brian Larsen leads with top extraction rate at <span class="highlight">60.1%</span></li>
-                    <li>FileServe handles <span class="highlight">89.9%</span> of total work volume</li>
-                    <li>Two firms exceed 20% extraction usage levels</li>
+                <ul>
+                    <li>Total extraction rate is 10.05% across 11 law firms</li>
+                    <li>Without Brian Larsen, rate drops to 8.05% showing concentration risk</li>
+                    <li>Only 4 of 11 customers exceed 10% extraction threshold</li>
+                    <li>Median extraction rate of 7.27% is well below 15% target</li>
+                    <li>Quality concerns with 6.0% rejection rate above 5% threshold</li>
                 </ul>
             </div>
-
             <div class="card">
                 <h3>Key Metrics</h3>
-                <div class="metrics-grid">
-                    <div class="metric-box" onclick="highlightMetric(this)">
-                        <div class="metric-value">325</div>
-                        <div class="metric-label">Count Extraction</div>
-                    </div>
-                    <div class="metric-box" onclick="highlightMetric(this)">
-                        <div class="metric-value">2,881</div>
-                        <div class="metric-label">Count FileServe</div>
-                    </div>
-                    <div class="metric-box" onclick="highlightMetric(this)">
-                        <div class="metric-value">17</div>
-                        <div class="metric-label">Extraction Rejections</div>
-                    </div>
-                    <div class="metric-box" onclick="highlightMetric(this)">
-                        <div class="metric-value">182</div>
-                        <div class="metric-label">FileServe Rejections</div>
-                    </div>
-                </div>
+                <ul>
+                    <li>Median extraction rate: 7.27%</li>
+                    <li>Customers meeting 10%+ target: 36.4% (4 of 11)</li>
+                    <li>Overall extraction rejection rate: 6.0%</li>
+                    <li>Overall FileServe rejection rate: 6.3%</li>
+                    <li>Top performer: Law Office of Brian Larsen at 57.82%</li>
+                </ul>
             </div>
         </div>
-
-        <!-- Customer Leaderboard -->
+        
         <div class="section">
             <h2>Customer Leaderboard</h2>
-            <div class="leaderboard">
-                <div class="leaderboard-item" onclick="selectCustomer(this)">
-                    <div class="rank gold">1</div>
-                    <div class="customer-info">
-                        <div class="customer-name">Law Office of Brian Larsen</div>
-                        <div class="customer-stats">83 extractions</div>
-                    </div>
-                    <div class="extraction-rate" style="color: #51cf66;">60.1%</div>
-                </div>
-                <div class="leaderboard-item" onclick="selectCustomer(this)">
-                    <div class="rank silver">2</div>
-                    <div class="customer-info">
-                        <div class="customer-name">Kasowitz LLP</div>
-                        <div class="customer-stats">83 extractions</div>
-                    </div>
-                    <div class="extraction-rate" style="color: #51cf66;">31.2%</div>
-                </div>
-                <div class="leaderboard-item" onclick="selectCustomer(this)">
-                    <div class="rank bronze">3</div>
-                    <div class="customer-info">
-                        <div class="customer-name">Consumer Legal Services, P.C.</div>
-                        <div class="customer-stats">44 extractions</div>
-                    </div>
-                    <div class="extraction-rate" style="color: #4ecdc4;">20.4%</div>
-                </div>
-                <div class="leaderboard-item" onclick="selectCustomer(this)">
-                    <div class="rank regular">4</div>
-                    <div class="customer-info">
-                        <div class="customer-name">Dolan Law Firm PC</div>
-                        <div class="customer-stats">23 extractions</div>
-                    </div>
-                    <div class="extraction-rate" style="color: #4ecdc4;">19.3%</div>
-                </div>
-                <div class="leaderboard-item" onclick="selectCustomer(this)">
-                    <div class="rank regular">5</div>
-                    <div class="customer-info">
-                        <div class="customer-name">Gibson, Robb & Lindh</div>
-                        <div class="customer-stats">4 extractions</div>
-                    </div>
-                    <div class="extraction-rate" style="color: #666;">8.7%</div>
-                </div>
-                <div class="leaderboard-item" onclick="selectCustomer(this)">
-                    <div class="rank regular">6</div>
-                    <div class="customer-info">
-                        <div class="customer-name">McCune Law Group</div>
-                        <div class="customer-stats">13 extractions</div>
-                    </div>
-                    <div class="extraction-rate" style="color: #666;">7.3%</div>
-                </div>
+            <div class="leaderboard-item" onclick="selectFirm(this)">
+                <div class="medal gold">1</div>
+                <div class="firm-name">Law Office of Brian Larsen</div>
+                <div class="extraction-rate">57.82%</div>
+            </div>
+            <div class="leaderboard-item" onclick="selectFirm(this)">
+                <div class="medal silver">2</div>
+                <div class="firm-name">Kasowitz LLP</div>
+                <div class="extraction-rate">33.12%</div>
+            </div>
+            <div class="leaderboard-item" onclick="selectFirm(this)">
+                <div class="medal bronze">3</div>
+                <div class="firm-name">Consumer Legal Services, P.C.</div>
+                <div class="extraction-rate">21.05%</div>
+            </div>
+            <div class="leaderboard-item" onclick="selectFirm(this)">
+                <div class="medal" style="background: #6c757d;">4</div>
+                <div class="firm-name">Dolan Law Firm PC</div>
+                <div class="extraction-rate">17.86%</div>
+            </div>
+            <div class="leaderboard-item" onclick="selectFirm(this)">
+                <div class="medal" style="background: #6c757d;">5</div>
+                <div class="firm-name">McCune Law Group</div>
+                <div class="extraction-rate">9.18%</div>
             </div>
         </div>
-
-        <!-- Error Analysis Dashboard -->
+        
         <div class="section">
             <h2>Error Analysis Dashboard</h2>
             <div class="error-grid">
                 <div class="error-card good">
-                    <h4><span class="status-dot status-good"></span>Low Risk Customers</h4>
-                    <ul class="bullet-list">
-                        <li>Matern Law Group PC: 0% extraction rejections</li>
-                        <li>WLF Wrongful Termination: 0% extraction rejections</li>
-                        <li>McCune Law Group: 0% extraction rejections</li>
-                        <li>Gibson, Robb & Lindh: 0% extraction rejections</li>
-                    </ul>
+                    <div class="error-number">5</div>
+                    <div class="error-label">Low Risk Firms<br>(0-5% rejection)</div>
                 </div>
                 <div class="error-card warning">
-                    <h4><span class="status-dot status-warning"></span>Medium Risk Customers</h4>
-                    <ul class="bullet-list">
-                        <li>WLF Wage & Hour: 2.7% extraction rejections</li>
-                        <li>Dolan Law Firm PC: 4.3% extraction rejections</li>
-                        <li>Law Office of Brian Larsen: 4.8% extraction rejections</li>
-                        <li>Consumer Legal Services: 6.8% extraction rejections</li>
-                    </ul>
+                    <div class="error-number">4</div>
+                    <div class="error-label">Medium Risk Firms<br>(5-10% rejection)</div>
                 </div>
                 <div class="error-card bad">
-                    <h4><span class="status-dot status-bad"></span>High Risk Customers</h4>
-                    <ul class="bullet-list">
-                        <li>Kasowitz LLP: 8.4% extraction rejections</li>
-                        <li>American Lemon Law Group: 12.5% extraction rejections</li>
-                        <li>FileServe rates range from 2.9% to 12.7%</li>
-                        <li>Overall FileServe rejection rate: 6.3%</li>
-                    </ul>
+                    <div class="error-number">2</div>
+                    <div class="error-label">High Risk Firms<br>(10%+ rejection)</div>
                 </div>
             </div>
         </div>
-
-        <!-- Daily Trends -->
+        
         <div class="section">
-            <div class="card">
-                <h3>Daily Trends</h3>
-                <div style="background: #f8f9fa; padding: 2rem; border-radius: 8px; margin: 1rem 0;">
-                    <canvas id="trendsChart" width="800" height="400"></canvas>
-                </div>
-                <ul class="bullet-list">
-                    <li>Tuesday shows peak activity with 80 extractions (24.6% of total volume)</li>
-                    <li>Recent 7-day period shows 35.4% drop from previous week</li>
-                    <li>August 5th hit peak day with 20 extractions processed</li>
-                    <li>Weekend activity minimal with only 3 Sunday extractions, zero Saturday</li>
-                    <li>Daily average runs 11.2 extractions across 29-day period</li>
+            <h2>Daily Trends</h2>
+            <div class="chart-container">
+                <canvas id="trendsChart"></canvas>
+            </div>
+            <div class="insights">
+                <h4>Key Insights:</h4>
+                <ul>
+                    <li>Three firms drive majority of extraction volume</li>
+                    <li>Significant performance gap between top and bottom performers</li>
+                    <li>Rejection rates vary widely by customer suggesting training needs</li>
+                    <li>Strong concentration risk with top performer representing 23% of extractions</li>
                 </ul>
             </div>
         </div>
-
-        <!-- Retention Analysis -->
+        
         <div class="section">
-            <div class="card">
-                <h3>Retention Analysis</h3>
-                <div class="tabs">
-                    <button class="tab active" onclick="switchTab(event, 'retention-overview')">Overview</button>
-                    <button class="tab" onclick="switchTab(event, 'retention-firms')">By Firm</button>
-                </div>
-               
-                <div id="retention-firms" class="tab-content">
-                    <ul class="bullet-list">
-                        <li>Law Office of Brian Larsen: Strong usage with 60.1% extraction rate</li>
-                        <li>Kasowitz LLP: Good adoption with 31.2% extraction rate</li>
-                        <li>Consumer Legal Services: Fair use at 20.4% extraction rate</li>
-                        <li>Other firms: Below 20% adoption levels</li>
-                    </ul>
-                </div>
-                <div id="retention-overview" class="tab-content active">
-                    <ul class="bullet-list">
-                        <li>Cohort retention TBD</li>
-                        <li>Two firms show strong adoption rates above 20%</li>
-                    </ul>
-                </div>
+            <h2>Retention Analysis</h2>
+            <div class="tabs">
+                <button class="tab active" onclick="showTab('overview')">Overview</button>
+                <button class="tab" onclick="showTab('by-firm')">By Firm</button>
             </div>
-        </div>
-
-        <!-- Stage-Gate Assessment -->
-        <div class="section">
-            <div class="card">
-                <h3>Stage-Gate Assessment</h3>
-                <table class="stage-gate-table">
-                    <thead>
-                        <tr>
-                            <th>Metric</th>
-                            <th>Current Value</th>
-                            <th>Threshold</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Extraction%</td>
-                            <td>10.1%</td>
-                            <td>TBD</td>
-                            <td><span class="status-dot status-pending"></span>Pending</td>
-                        </tr>
-                        <tr>
-                            <td>Rejection Rate (Extraction)</td>
-                            <td>5.2%</td>
-                            <td>TBD</td>
-                            <td><span class="status-dot status-pending"></span>Pending</td>
-                        </tr>
-                        <tr>
-                            <td>Rejection Rate (FileServe)</td>
-                            <td>6.3%</td>
-                            <td>TBD</td>
-                            <td><span class="status-dot status-pending"></span>Pending</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Recommendations -->
-        <div class="section">
-            <div class="card">
-                <h3>Call Outs</h3>
-                <ul class="bullet-list">
-                    <li>Make the doc extract workflow the default path.</li>
-                    <li>Open pilot to more users.</li>
-                    <li>Why is Law Brian Larsen office so engaged?</li>
-                    <li>Why does American Lemon Law Group have a high 12.5% error rate?</li>
-    
+            <div class="tab-content active" id="overview">
+                <ul>
+                
+                    <li>Need to track user engagement beyond initial extraction attempts</li>
+                    <li>Focus on firms with high extraction rates for retention patterns</li>
+                    <li>Monitor drop-off rates after first successful extraction</li>
                 </ul>
             </div>
+            <div class="tab-content" id="by-firm">
+                <ul>
+                    <li>Brian Larsen: High adoption suggests strong retention potential</li>
+                    <li>Kasowitz LLP: Moderate volume with good extraction rate</li>
+                    <li>Consumer Legal: Consistent performance across moderate volume</li>
+                    <li>Low performers may need enhanced onboarding support</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Stage-Gate Assessment</h2>
+            <table class="stage-table">
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Current Value</th>
+                        <th>Threshold</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Median Extraction%</td>
+                        <td>7.27%</td>
+                        <td>≥ 15%</td>
+                        <td class="status-fail">Fail</td>
+                    </tr>
+                    <tr>
+                        <td>Customers ≥ 10% Extraction%</td>
+                        <td>36.4% (4/11)</td>
+                        <td>≥ 50%</td>
+                        <td class="status-fail">Fail</td>
+                    </tr>
+                    <tr>
+                        <td>Extraction Rejection Rate</td>
+                        <td>6.0%</td>
+                        <td>≤ 5%</td>
+                        <td class="status-fail">Fail</td>
+                    </tr>
+                    <tr>
+                        <td>Day-7 Meaningful Retention</td>
+                        <td>n/a</td>
+                        <td>≥ 30%</td>
+                        <td class="status-pending">Pending</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="call-outs">
+            <h2>Call Outs</h2>
+            <ul>
+                <li>Why is Brian Larsen achieving 57.82% extraction rate while others struggle?</li>
+                <li>Expand pilot to firms with similar profiles to top performers</li>
+                <li>Why does Lemon Law have the highest rejection rate at 12.5%?</li>
+            </ul>
         </div>
     </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    
     <script>
-        // Chart.js for Daily Trends
+        // Chart configuration
         const ctx = document.getElementById('trendsChart').getContext('2d');
-        const trendsChart = new Chart(ctx, {
+        const chart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+                labels: ['Brian Larsen', 'Kasowitz', 'Consumer Legal', 'Dolan', 'McCune', 'Gibson Robb', 'Molino', 'Matern', 'WLF W&H', 'WLF WT/CA', 'Lemon Law'],
                 datasets: [{
-                    label: 'Extraction Orders',
-                    data: [63, 80, 62, 67, 50, 0, 3],
+                    label: 'Extraction Rate (%)',
+                    data: [57.82, 33.12, 21.05, 17.86, 9.18, 7.27, 3.46, 3.32, 3.23, 2.68, 2.35],
                     backgroundColor: [
-                        '#4ecdc4',
-                        '#51cf66',
-                        '#4ecdc4', 
-                        '#4ecdc4',
-                        '#ffa726',
-                        '#ff6b6b',
-                        '#ff6b6b'
+                        '#ff6b6b', '#4ecdc4', '#51cf66', '#ffa726', '#845ec2',
+                        '#6c757d', '#495057', '#868e96', '#adb5bd', '#ced4da', '#dee2e6'
                     ],
-                    borderColor: [
-                        '#4ecdc4',
-                        '#51cf66',
-                        '#4ecdc4',
-                        '#4ecdc4', 
-                        '#ffa726',
-                        '#ff6b6b',
-                        '#ff6b6b'
-                    ],
-                    borderWidth: 2
+                    borderWidth: 1
                 }]
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Weekly Distribution (325 total)',
-                        font: {
-                            size: 16
-                        }
+                        text: 'Extraction Rate by Customer (368 total extractions)'
                     },
                     legend: {
                         display: false
@@ -666,104 +584,52 @@
                 scales: {
                     y: {
                         beginAtZero: true,
-                        max: 90,
-                        title: {
-                            display: true,
-                            text: 'Number of Orders'
-                        }
-                    },
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Day of Week'
+                        max: 60,
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            }
                         }
                     }
                 }
             }
         });
-
+        
+        // Interactive functions
         function animateCard(card) {
-            card.style.transform = 'scale(0.95)';
+            card.style.transform = 'scale(1.1)';
             setTimeout(() => {
-                card.style.transform = 'translateY(-5px)';
-            }, 150);
+                card.style.transform = 'scale(1.05)';
+            }, 200);
         }
-
-        function selectCustomer(item) {
-            // Remove previous selections
-            document.querySelectorAll('.leaderboard-item').forEach(i => {
-                i.style.background = '';
+        
+        function selectFirm(item) {
+            document.querySelectorAll('.leaderboard-item').forEach(el => {
+                el.style.background = '#f8f9fa';
+                el.style.color = '#2c3e50';
             });
-            
-            // Highlight selected
-            item.style.background = 'linear-gradient(135deg, #4ecdc4, #51cf66)';
+            item.style.background = 'linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%)';
             item.style.color = 'white';
-            
-            // Reset after 2 seconds
-            setTimeout(() => {
-                item.style.background = '';
-                item.style.color = '';
-            }, 2000);
         }
-
-        function highlightMetric(box) {
-            box.style.background = 'linear-gradient(135deg, #4ecdc4, #51cf66)';
-            box.style.color = 'white';
+        
+        function showTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
             
-            setTimeout(() => {
-                box.style.background = '#f8f9fa';
-                box.style.color = '';
-            }, 1500);
-        }
-
-        function switchTab(evt, tabName) {
-            // Hide all tab contents
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            
-            // Remove active class from all tabs
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            // Show selected tab content and mark tab as active
+            document.querySelector(`[onclick="showTab('${tabName}')"]`).classList.add('active');
             document.getElementById(tabName).classList.add('active');
-            evt.currentTarget.classList.add('active');
         }
-
-        // Initialize progress bars animation
-        document.addEventListener('DOMContentLoaded', function() {
-            const progressBars = document.querySelectorAll('.progress-fill');
-            progressBars.forEach(bar => {
-                const width = bar.style.width || '0%';
-                bar.style.width = '0%';
-                setTimeout(() => {
-                    bar.style.width = width;
-                }, 500);
-            });
-        });
-
-        // Add click animations to error cards
-        document.querySelectorAll('.error-card').forEach(card => {
-            card.addEventListener('click', function() {
-                this.style.transform = 'scale(1.02)';
-                setTimeout(() => {
-                    this.style.transform = 'translateY(-2px)';
-                }, 200);
-            });
-        });
-
-        // Add hover effects to metric boxes
-        document.querySelectorAll('.metric-box').forEach(box => {
-            box.addEventListener('mouseenter', function() {
-                this.style.background = 'linear-gradient(135deg, #e9ecef, #f8f9fa)';
+        
+        // Add hover effects to risk columns
+        document.querySelectorAll('.risk-column').forEach(column => {
+            column.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+                this.style.boxShadow = '0 8px 15px rgba(0, 0, 0, 0.1)';
             });
             
-            box.addEventListener('mouseleave', function() {
-                if (!this.style.background.includes('gradient(135deg, #4ecdc4')) {
-                    this.style.background = '#f8f9fa';
-                }
+            column.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = 'none';
             });
         });
     </script>
